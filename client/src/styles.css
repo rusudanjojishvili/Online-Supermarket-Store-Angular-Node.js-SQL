@@ -1,0 +1,19 @@
+/* You can add global styles to this file, and also import other style files */
+
+html, body { height: 100%; overflow-x: hidden;  }
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+/* body { margin: 0; font-family: Georgia, 'Times New Roman', Times, serif; } */
+@media only screen and (max-width:320px){
+    body{font-size: 8px;}
+}
+ @media only screen and (min-width: 992px){
+    body{overflow: hidden;}  
+ }
+.example-custom-date-class {
+    background: red;
+    border-radius: 100%;
+  }
+  
+
+html, body { height: 100%; }
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }

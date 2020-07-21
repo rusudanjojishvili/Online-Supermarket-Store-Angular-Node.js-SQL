@@ -1,0 +1,134 @@
+<div class="background">
+  <mat-toolbar>
+
+  <div id="searchdiv"><span id="titlesearch">Search product</span><input type="text" (input)="updateSearch($event)" placeholder="product name"></div>
+
+</mat-toolbar>
+</div>
+<div class="main">
+<div class="wrapper">
+
+<div class="box one">
+
+  <div class="cartheader">
+   
+   <span id="cartTitle"><span style="font-size: 18px;">My Cart</span><mat-icon [matBadge]="prodQperCart" matBadgeColor="accent" class="material-icons-outlined">shopping_cart_outline</mat-icon></span>
+   
+   <a style="width: 100px;" routerLink="/shop" style="left: 5px;">Back to shop</a>
+   
+  </div>
+
+  <div class="content">
+    <div id="imgemptycart" *ngIf="isCartEmpty"><img src="assets/images/emptycart.png">
+      <span style="color: red;">Your Shopping Cart Is Empty,Nothing To Order!</span></div>
+ 
+    <div class="cartdiv" *ngFor="let c of chosenProducts">
+
+      
+      <div class="cartimages">
+        
+        <img class="cartimg" src="{{url}}{{c.img_url}}"> 
+      </div> 
+      <div class="divcontent"> 
+ 
+        <span class="pname" [innerHTML]="c.name | highlight: searchTerm"></span>
+        <span>{{c.quantity}}<small>pcs</small></span>
+      </div>
+        <span class="price">{{c.priceByQuantity | currency:"ILS":"symbol"}}</span>
+      
+    </div>
+   </div>
+   <footer >
+     <span class="totalPrice" >Total Price: {{totalPrice | currency:"ILS":"symbol"}}</span>
+  
+    </footer>  
+   
+   
+</div>
+<div class="box two">
+<div style="text-align: center;">
+   <h2 style="color: #01264b;font-family: 'Unlock', cursive;">Order Your Groceries</h2>
+ </div>
+ <div class="inlinediv">
+   <form [formGroup]="form" (ngSubmit)=order()>
+   <div class="titles">
+     SHIPPING DETAILS:
+   </div>
+   
+  <div class="row">
+    <div class="col-25">
+      <label for="city">City<span class="required">*</span></label>
+  </div>
+  <div class="col-75">
+    
+      <mat-form-field class="example-full-width" appearance="outline">
+        <mat-label>city</mat-label>
+        <input matInput matTooltip="Double click if shipping address is your residential address"  placeholder="city" formControlName="delivery_city" (dblclick)="showCity()">
+      </mat-form-field>
+      <p class="errors"  *ngIf="form.controls.delivery_city.dirty && form.controls.delivery_city.errors?.required">Street is required</p>
+  </div>
+  </div>
+  <div class="row">
+      <div class="col-25">
+        <label for="street">Street<span class="required">*</span></label>
+      </div>
+      <div class="col-75">
+        
+        <mat-form-field  appearance="outline" >
+          <mat-label>street</mat-label>
+          <input matInput matTooltip="Double click if shipping address is your residential address"  placeholder="street" formControlName="delivery_street" (dblclick)="showStreet()">
+        </mat-form-field>
+        <p class="errors"  *ngIf="form.controls.delivery_street.dirty && form.controls.delivery_street.errors?.required">Street is required</p>
+      </div>
+  </div>
+  <div class="row">
+      <div class="col-25">
+        <label for="ShippingDate">Shipping Date<span class="required">*</span></label>
+      </div>
+      <div class="col-75">
+        <mat-form-field class="example-full-width" appearance="outline">
+          <mat-label>Choose a date</mat-label>
+          <input matInput [min]="minDate" readonly [matDatepicker]="myDatePicker" formControlName="delivery_date" (dateInput)="checkEvent('input', $event)" (dateChange)="checkEvent('change', $event)">
+          <mat-datepicker-toggle matSuffix [for]="myDatePicker"></mat-datepicker-toggle>
+          <mat-datepicker [dateClass]="dateClass" #myDatePicker></mat-datepicker>
+        </mat-form-field>
+        <p class="errors"  *ngIf="dateCheck>3">You have to choose another day, all shipments are busy</p>
+       
+       
+      </div> 
+  </div>
+  <div class="titles">
+    PAYMENTS:
+  </div>
+  <div class="logoimg">
+    <img src="assets/images/mastercard.jpg">
+    <img src="assets/images/visa.jpg">
+    <img src="assets/images/amer.png">
+    <img src="assets/images/diners.jpg">
+    <img src="assets/images/isracard.png">
+    <img src="assets/images/discover.jpg">
+  </div>
+  <div class="row">
+    <div class="col-25">
+      <label for="Credit card">Credit card<span class="required">*</span></label>
+    </div>
+    <div class="col-75">
+      <mat-form-field  appearance="outline" >
+        <mat-label>Credit card</mat-label>
+        <input matInput numeric placeholder="Credit card" formControlName="credit_card" (input)="stripText(form.get('credit_card'))" >
+      </mat-form-field>
+      <p class="errors"  *ngIf="form.controls.credit_card.dirty && form.controls.credit_card.errors?.required">Credit Card is required</p>
+      <p class="errors"  *ngIf="form.controls.credit_card.dirty && form.controls.credit_card.errors?.creditcarderror">Invalid Credit card</p>
+      
+    </div>
+</div > 
+  <input  type="submit" value="Order" [disabled]="form.invalid || dateCheck >3 || isCartEmpty" [ngClass]="form.invalid || dateCheck >3 || isCartEmpty
+  ? 'submitdisabled':'submitenabled'">
+</form>
+
+ 
+ <p><span class="required" style="font-size: 16px;">*</span><span style="font-style: italic;color:yellow;font-size: 14px;"> Required Fields</span></p>
+  </div>
+</div>
+</div>
+</div>

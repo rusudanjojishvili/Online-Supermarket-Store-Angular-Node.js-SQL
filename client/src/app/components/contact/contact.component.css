@@ -1,0 +1,41 @@
+@import url('https://fonts.googleapis.com/css2?family=Unlock&display=swap');
+.box{
+    height: 650px;
+    position: relative;
+  
+   
+ }
+ .wrapper{
+    width: 100%;
+    margin: 0 auto;
+    background-color:#557ec0;
+}
+#main{
+   
+    display: flex;
+    flex-wrap: wrap;
+    flex-flow: row;
+    justify-content: space-between;
+    overflow: hidden;
+    border: 2px solid #fff;
+    height: 650px;
+    
+}
+.one{
+  flex:  0 1 30%; 
+  text-align: center; 
+}
+.one:after{
+    border-right: 1px solid #003366;
+    content: " ";
+    position: absolute;
+    height:450px;
+    right: 0;
+    top: 60px;
+
+  
+}
+.two{
+    flex:  0 1 70%;  
+    margin: 30px 0 0 30px;
+}

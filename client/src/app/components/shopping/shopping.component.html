@@ -1,0 +1,108 @@
+<div class="main">
+  <div class="background">
+  <mat-toolbar>
+  <form class="searchform" [formGroup]="form" (submit)="searchProduct()">
+  <input type="text" formControlName="name" placeholder="product name">
+  <button id="submit" type="submit"><mat-icon>search</mat-icon></button>
+</form>
+</mat-toolbar>
+</div>
+
+
+
+ 
+ <div>
+   <ul class="categories">
+      <li class="categitems" *ngFor="let c of categories" [value]="c.id" (click)="getProducts($event.target.value,c)"
+      [ngClass]="{'active' :c.isClicked}">{{c.name}}</li>
+    </ul>
+   </div>
+  
+<mat-drawer-container >
+<button *ngIf="!opened" id="closebtn" (click)="opened=!opened" matTooltip="open the cart"><mat-icon style="color:white">chevron_right</mat-icon></button>
+
+ <mat-drawer [(opened)]="opened" mode="side">
+   <div class="cartinline">
+   <div class="cartheader">
+    
+    <span id="cartTitle"><span>My Cart</span><mat-icon [matBadge]="prodQperCart" matBadgeColor="accent" class="material-icons-outlined">shopping_cart_outline</mat-icon></span>
+   
+    <button id="deletecart" mat-fab (click)="deleteCart()" matTooltip="clean the cart"  matTooltipPosition="right">
+     <mat-icon style="font-size: 22px;position: relative;bottom: 6px;">delete</mat-icon>
+   </button>
+    <mat-icon id="openbtn" (click)="opened=!opened" matTooltip="close the cart">chevron_left</mat-icon>
+    
+   
+   </div>
+ 
+   <div class="content">
+     <div id="imgemptycart" *ngIf="isCartEmpty">
+       <img src="assets/images/emptycart.png">
+       <span>Your Shopping Cart Is Empty</span>
+       <p style="color: red;" *ngIf="emptyCartError">you haven't yet chosen products to order!</p>
+     
+     </div>
+     <div class="cartdiv" *ngFor="let c of chosenProducts">
+        <mat-icon id="cancelIcon" (click)="deleteFromCart(c.id)">clear_outline</mat-icon>
+       <div class="cartimages">
+         
+         <img class="cartimg" src="{{url}}{{c.img_url}}">
+       </div> 
+       
+       
+        <div class="divcontent"> 
+         <p class="pname">{{c.name}}</p>
+         
+        <button class="minusbtn" (click)="decreaseQ(c.p_id)">-</button>
+          <span><span style="font-weight: 600;"> {{c.quantity}}</span><small>pcs </small></span>
+          <button class="plusbtn" (click)="increaseQ(c.p_id)">+ </button>
+        
+         
+       </div> 
+       <span class="price">{{c.priceByQuantity | currency:"ILS":"symbol"}}</span>
+     </div>
+    </div>
+    
+    <footer >
+      <div id="totaldiv"><span class="totalPrice" >Total Price: {{totalPrice | currency:"ILS":"symbol"}}</span>
+     
+     
+     </div>
+    
+     <button class="orderbtn" (click)="switchToOrder()">
+     CHECK OUT
+     </button>
+     </footer>  
+    
+    </div>
+ </mat-drawer>
+
+ 
+   <span class="categ">categories</span>
+  
+    
+ <div class="productscontent"> 
+
+   <section class="products" >
+     
+     <section class="productItem" *ngFor="let p of products"  >
+       <mat-card  class="productcard">
+         <mat-card-header>
+         </mat-card-header>
+         <img class="cardimg" mat-card-image src="{{url}}{{p.img_url}}">
+         <mat-card-content>
+           <p >Price: <span style="font-weight: 700; font-family: sans-serif;">{{p.price | currency:"ILS":"symbol"}} </span></p>
+           <p style="color: #737373;font-size: 15px;font-weight: 430;">{{p.name}}</p>
+         </mat-card-content>
+         <mat-card-actions>
+           <button id="choosebtn" mat-button (click)="openDialog(p)">add to cart </button>
+          
+         </mat-card-actions>
+       </mat-card>
+     </section>
+     
+   </section>
+ </div>
+
+</mat-drawer-container>
+</div>

@@ -1,0 +1,26 @@
+<header>
+  <mat-toolbar id="navbar"> 
+   <div class="wrapper">
+
+  <span class="logospan" (click)="gohome()"><img id="logo" src="assets/images/logo8.png">
+    <span style="font-family: 'Montserrat Subrayada', sans-serif;"
+    >RJMarket</span></span>
+  <span id="username" *ngIf="username">Hello {{username}}</span>
+  
+  <nav>
+    <a class="burger-nav" (click)="showNavBar=!showNavBar"></a>
+    
+    <ul [ngClass]="showNavBar? 'open':'' ">
+        <li><a routerLink="/">Log-in</a></li>
+        <li><a routerLink="/register">Register</a></li>
+        <li><a routerLink="/contact">Contact</a></li>
+        <li *ngIf="username" (click)="logout()"><a routerLink="/register">Logout</a></li>
+    </ul>
+ </nav>
+  </div>
+</mat-toolbar>
+</header>
+
+<main>
+<router-outlet></router-outlet>
+</main>

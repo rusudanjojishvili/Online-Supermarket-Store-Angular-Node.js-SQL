@@ -1,0 +1,157 @@
+<div class="main">
+    <div class="background">
+    <mat-toolbar>
+    <form class="searchform" [formGroup]="searchForm" (submit)="searchProduct()">
+    <input type="text" formControlName="name" placeholder="product name">
+    <button id="submit" type="submit"><mat-icon>search</mat-icon></button>
+  </form>
+  </mat-toolbar>
+ </div>
+
+   <mat-icon *ngIf="!opened" id="closebtn" (click)="opened=!opened">menu</mat-icon>
+ <mat-drawer-container >
+
+   <mat-drawer [(opened)]="opened" mode="side">
+     <div class="cartinline">
+     <div class="cartheader">
+      
+      <span id="cartTitle"><span id="chosenProduct">
+          {{chosenProductName}} </span>
+      <span *ngIf="chosenProductId">Product ID: {{chosenProductId}}</span>
+    </span>
+      
+      
+      <mat-icon class="addbtn" *ngIf="!showAddForm"(click)="open()" (click)="closeUpdateForm()">add</mat-icon>
+      <mat-icon class="addbtn" *ngIf="showAddForm" (click)="close()" (click)="closeUpdateForm()">remove</mat-icon>
+     
+     </div>
+        
+     <div class="content">
+         <form [formGroup]="addForm" *ngIf="showAddForm" (submit)="addProduct()">
+             <p>Add Product</p>
+        <mat-form-field  appearance="outline">
+            <mat-label>product name</mat-label>
+            <input matInput placeholder="product name" formControlName="name">
+           
+          </mat-form-field>
+            <p class="errors"  *ngIf="addForm.controls.name.dirty  && addForm.controls.name.errors?.required">Name is required</p>
+       
+        <mat-form-field  appearance="outline">
+            <mat-label>price</mat-label>
+            <input matInput numeric placeholder="price" formControlName="price" (input)="stripText(addForm.get('price'))">
+            <mat-error style="color: red;" *ngIf="addForm.controls.price.dirty && addForm.controls.price.hasError('required')">
+              Price is required
+            </mat-error> 
+        </mat-form-field>
+     
+       
+      <input type="file" style="display: none;"  formControlName="img_url" accept="image/*" name="file" id="file" (change)="processFile(imageInput)" #imageInput >
+       
+       
+        <button type="button" (click)="imageInput.click()" class="imgselect">choose image <mat-icon >folder</mat-icon></button>
+        <div class="img-preview-container" >
+           
+          <div *ngIf="selectedFile" class="img-preview{{selectedFile.status === 'fail' ? '-error' : ''}}"
+               [ngStyle]="{'background-image': 'url('+ selectedFile.src + ')'}"><span class="imgpreview"
+               *ngIf="controller">preview image here<p style="font-size: 12px;"><i>* image is required</i></p></span>
+          </div>
+          <div *ngIf="fileName">{{fileName}}</div>
+         
+        </div>
+        
+        <mat-form-field appearance="fill"> 
+            <mat-label>Category</mat-label>
+            <mat-select formControlName="c_id">
+              <mat-option *ngFor="let c of categories" [value]="c.id" >{{c.name}}</mat-option>
+            </mat-select>
+          
+         <mat-error style="color: red;"  *ngIf="addForm.controls.c_id.touched && addForm.controls.c_id.hasError('required')">
+              Category is required
+            </mat-error> 
+          </mat-form-field>
+        <input type="submit" value="SAVE" [disabled]="addForm.invalid" [ngClass]="addForm.invalid
+        ? 'submitdisabled':'submitenabled'" >
+
+        </form>
+        <!-- updateForm -->
+        <form [formGroup]="updateForm" *ngIf="showUpdateForm" (submit)="updateProduct()" >
+            <p>Update Product</p>
+            <mat-form-field  appearance="outline">
+                <mat-label>product name</mat-label>
+                <input matInput placeholder="product name" formControlName="name">
+            </mat-form-field>
+            <p class="errors"  *ngIf="updateForm.controls.name.dirty  && updateForm.controls.name.errors?.required">Name is required</p>
+            <mat-form-field  appearance="outline">
+                <mat-label>price</mat-label>
+                <input matInput placeholder="price" formControlName="price"(input)="stripText(updateForm.get('price'))" >
+                <mat-error style="color: red;" *ngIf="updateForm.controls.price.dirty && updateForm.controls.price.hasError('required')">
+                  Price is required
+                </mat-error> 
+            </mat-form-field>
+            <input type="file" style="display: none;" accept="image/*" name="file" id="file" (change)="processFile2(imageInput)" #imageInput >
+       
+       
+            <button type="button" (click)="imageInput.click()" class="imgselect">choose image <mat-icon >folder</mat-icon></button>
+            <div class="img-preview-container" >
+               
+              <div *ngIf="selectedFile" class="img-preview{{selectedFile.status === 'fail' ? '-error' : ''}}"
+                   [ngStyle]="{'background-image': 'url('+ selectedFile.src + ')'}">
+                
+                   <img *ngIf="imageToPreview" id="imageToPreview" src="{{url}}{{imageToPreview}}">
+              </div>
+            <mat-form-field class="imginput" >
+             
+                <input matInput readonly  formControlName="img_url">
+            </mat-form-field></div>
+            <mat-form-field appearance="fill">
+                <mat-label>Category</mat-label>
+                <mat-select formControlName="c_id">
+                  <mat-option *ngFor="let c of categories" [value]="c.id">{{c.name}}</mat-option>
+                </mat-select>
+              </mat-form-field>
+            <input type="submit" value="SAVE" [disabled]="updateForm.invalid"  [ngClass]="updateForm.invalid
+            ? 'submitdisabled':'submitenabled'">
+        </form> 
+        <div *ngIf="notificUpdateProd" style="color:yellow">The product has been successfully updated!</div>
+        <div *ngIf="productUpdateErr" style="color:red">Something went wrong, product wasn't updated!</div>
+      <div id="addProdNotific" *ngIf="notification || uploadError || notificAddProd || productaddError">
+        <div *ngIf="notification" style="color: yellow;"> Image Uploaded Successfuly!</div>
+        <div *ngIf="uploadError" style="color: red;"> Problem detected in uploading an image!</div>
+        <div *ngIf="notificAddProd" style="color:yellow">New Product successfully added!</div>
+        <div *ngIf="productaddError" style="color:red">Something went wrong, product wasn't added to the list!</div>
+      </div>
+        
+      </div>
+      </div>
+   </mat-drawer>
+ 
+       <div [ngClass]="opened? 'navbaropen':'navbarclosed' ">
+       <ul class="categories">
+          <li class="categitems" *ngFor="let c of categories" [value]="c.id" (click)="getProducts($event.target.value,c)"
+          [ngClass]="{'active' :c.isClicked}">{{c.name}}</li>
+        </ul>
+       </div>
+       
+    
+   <div class="productscontent"> 
+     <section class="products" >
+       <section class="productItem" *ngFor="let p of products" (click)="showValuesInInputs(p)" >
+         <mat-card  class="productcard" >
+           <mat-card-header>
+           </mat-card-header>
+           <img class="cardimg" mat-card-image src="{{url}}{{p.img_url}}">
+           <mat-card-content>
+             <p>Price: {{p.price | currency:"ILS":"symbol"}} </p>
+             <p>{{p.name}}</p>
+           </mat-card-content>
+           <mat-card-actions>
+           </mat-card-actions>
+         </mat-card>
+       </section>
+       
+     </section>
+   </div>
+ 
+ </mat-drawer-container>
+ </div>
+  

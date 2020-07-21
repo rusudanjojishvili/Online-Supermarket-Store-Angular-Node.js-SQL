@@ -1,0 +1,35 @@
+/* .mat-dialog-container{
+    background: #5478b3;
+    text-align: center;  */
+    /* color: rgb(247, 247, 17); */
+    /* color: white; */
+/* } */
+::ng-deep.mat-dialog-container{
+   padding: 0px;
+}
+#container{
+    background-color: #5478b3;
+    padding: 25px;
+    text-align: center;
+}
+/* #container{
+    width:400px;
+    height: 100%;
+    background: #5478b3;
+    text-align: center;
+    /* color: rgb(247, 247, 17); */
+    /* color: white; */
+/* } */ 
+button{
+    
+    width: 30%;    
+    background-color:  #173970;
+    color: white;
+    padding: 8px 12px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    text-align: center;
+    font-size:16px;
+    
+}

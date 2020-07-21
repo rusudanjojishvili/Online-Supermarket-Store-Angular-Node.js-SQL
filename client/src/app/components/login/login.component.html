@@ -1,0 +1,79 @@
+<div class="wrapper">
+    <div id="main">
+    <div class="box one">
+        
+        <button  [disabled]="!token || isAdmin==1"  [ngClass]="!token || isAdmin==1? 'btndisabled':'startbtn' " (click)="goToShopping()">
+            <span *ngIf="productQ ==0 || productQ == undefined">start shopping</span>
+            <span *ngIf="productQ > 0">continue shopping</span>
+        </button>
+        
+        <div class="formdiv"><form  [formGroup]="form" (ngSubmit)="login()">
+         
+                
+            <p style="color: rgb(235, 228, 228);">Registered?</p>
+           
+                    <label  for="email">Email<span class="required">*</span></label>
+                    <input type="text" placeholder="user Name(Email)" formControlName="email">
+                    <p class="errors" *ngIf="form.controls.email.dirty && form.controls.email.errors?.required">Email is required</p>
+            
+                    <label for="password">Password<span class="required">*</span></label>
+                    <input type="password" placeholder="password" formControlName="password">
+                    <p class="errors" *ngIf="form.controls.password.dirty && form.controls.password.errors?.required">Password is required</p>
+               
+                <div *ngIf="signInErr"  class="error">
+                    <span>User Not found</span>
+                    <mat-icon  (click)="closeErr()" class="cancelicon" >cancel</mat-icon></div>
+            <button [disabled]="form.invalid" type="submit" [ngClass]="form.invalid? 'logindisabled':'loginbtn' ">Login</button>
+            <br>
+            <a routerLink="/register">sign up</a> 
+            <p><span class="required" style="font-size: 16px;float: left;">*</span><span class="subscript" > Required Fields</span></p>
+        </form> 
+        
+    </div>
+    </div>
+    <div class="box two">
+        <h2 style="margin-top: 40px; color: #01264b;font-family: 'Unlock', cursive;" >Why You Should Buy In Our Store:</h2>
+        <div class="promodiv" style="margin-top: 40px;" >
+            <mat-icon class="vIcon" >done</mat-icon><h3 style="color: #0e336e;margin-bottom: 9px;">Save Time & Money</h3>
+            <div><img class="imgStyles" src="assets/images/delive.png"></div>
+            <div class="promocontent"><p style="text-align: left;">Buy MARKET groceries for delivery straight to your door or collect in store for free</p></div>
+        </div>
+      
+        <div class="promodiv" >
+            <mat-icon class="vIcon">done</mat-icon><h3 style="color: #0e336e;margin-bottom: 7px;">The Personal Touch</h3>
+            <div><img class="imgStyles" src="assets/images/applesgreen.png"></div>
+            <div class="promocontent"><p style="text-align: left;">Sit back and relax whilst our personal shoppers pick & pack items as carefully as you would</p></div>
+        </div>
+      
+        <div class="promodiv" >
+            <mat-icon class="vIcon">done</mat-icon><h3 style="color: #0e336e;margin-bottom: 7px;">Friendly Doorstep Service</h3>
+            <div><img class="imgStyles" src="assets/images/img4.png"></div>
+            <div class="promocontent"><p style="text-align: left;">Our friendly drivers are on hand at your doorstep to answer any questions you might have</p></div>
+        </div>
+      
+        <div class="promodiv" >
+            <mat-icon class="vIcon">done</mat-icon><h3 style="color: #0e336e;margin-bottom: 9px;">Best Prices & Offers</h3>
+            <div><img class="imgStyles" src="assets/images/offer.png"></div>
+            <span class="promocontent"><p style="text-align: left;">Best discounts, bundles and offers every day. Shop More & Save More</p></span>
+        </div>
+        
+    </div>
+    <div class="box three">
+        <img id="img1" src="assets/images/image.jpg">
+        <span >
+        <p id="info1">Available products in our store - <span id="proQ">{{numberOfProducts}}</span> </p>
+        <p id="info2">Number of orders submitted in our store - <span id="ordQ">{{ordersQTotal}}</span> </p>
+        <p *ngIf="productQ>0" class="notification">notification: <br> you have open cart from date: {{creation_date}}<br>
+          Total:  {{totalPrice | currency:"ILS":"symbol"}}
+           </p>
+        <p class="notification" *ngIf="productQ==0 && ordersQ > 0">notification: <br>your last purchase was on date: {{lastOrderDate}}</p>
+       
+        <p class="notification" *ngIf="productQ==0 && ordersQ==0">notification: <br>welcome to your first purchase {{username}}</p>
+        </span>
+    
+    
+     </div>
+     
+    </div>  
+    </div>
+         

@@ -1,0 +1,146 @@
+<form id="main"  [formGroup]="form" (ngSubmit)="register()">
+    <div style="text-align: center;"><h2 style="font-family: 'Unlock', cursive;color: #01264b;" >Register For Online Shopping </h2>
+           <div class="titles">
+        Already user?<a routerLinkActive="active" routerLink="/"> sign in</a>
+    </div>
+</div>
+    <div class="wrapper">
+    <div class="box one">
+         <span style="background-color: #7f96bb;">Step 1 of 2</span>
+        <div class="inlinediv">
+        <div class="row">
+            <div class="col-25">
+                <label for="idnumber">ID number<span class="required">*</span></label>
+            </div>
+            <div class="col-75">
+                <input class="enabled" type="text" formControlName="idnumber" placeholder="ID" default="0" [maxlength]="9" (input)="idCheckUnique()" (input)="stripText(form.get('idnumber'))">
+                <p class="errors" *ngIf="form.controls.idnumber.dirty && form.controls.idnumber.errors?.required">ID number is required</p>
+                <p class="errors" *ngIf="form.controls.idnumber.dirty && form.controls.idnumber.errors?.pattern">Enter only numbers</p>
+                <div *ngIf="idnumberAlreadyExists != ''" class="errors">
+                    {{idnumberAlreadyExists}} 
+                  </div> 
+            </div>
+            </div>
+        <div class="row">
+            <div class="col-25">
+                <label for="email">Email <small>(username)</small><span class="required">*</span></label>
+                
+            </div>
+            <div class="col-75">
+                <input type="email" class="enabled" formControlName="email" placeholder="Email" (input)="emailCheckUnique()">
+                <p class="errors" *ngIf="form.controls.email.dirty && form.controls.email.errors?.required">Email is required</p>
+                <p class="errors" *ngIf="form.controls.email.dirty && form.controls.email.errors?.pattern">Enter a valid email</p>
+                <p *ngIf="emailAlreadyExists != ''" class="errors">
+                    {{emailAlreadyExists}} 
+                  </p>
+            </div> 
+            </div>
+
+        <div class="row">
+            <div class="col-25">
+                <label for="password">Password<span class="required">*</span></label>
+            </div>
+            <div class="col-75">
+                <input type="password" class="enabled" formControlName="password" placeholder="Password">
+                <p class="errors" *ngIf="form.controls.password.dirty && form.controls.password.errors?.required">Password is required</p>
+                <p class="errors" *ngIf="form.controls.password.dirty && form.controls.password.errors?.minlength">Password must be at least 5 characters long</p> 
+                <p class="errors" *ngIf="form.controls.password.dirty && form.controls.password.errors?.pattern">Your password must contain at least one uppercase, one lowercase, and one number</p> 
+            </div>
+            </div>
+
+        <div class="row">
+            <div class="col-25">
+                <label for="confirmPassword">Confirm password<span class="required">*</span></label>
+            </div>
+            <div class="col-75">
+                <input type="password" class="enabled" formControlName="confirmPassword" placeholder="Confirm password">
+                <p class="errors" *ngIf="form.controls.confirmPassword.dirty && form.controls.confirmPassword.errors?.required">Password confirmation is required</p>
+                <p  class="errors" *ngIf="form.controls.confirmPassword.dirty && form.controls.confirmPassword.errors?.confirmValidator">Password and Confirm Password must be match.</p>
+            </div>
+            </div>
+
+
+
+<div class='container'>
+    <ul>
+      <li>
+        <div class='animated-arrow' (click)="continue()">
+          <span class='the-arrow -left'>
+            <span class='shaft'></span>
+          </span>
+          <span class='main'>
+            <span class='text'>
+              Continue
+            </span>
+            <span class='the-arrow -right'>
+              <span class='shaft'></span>
+            </span>
+          </span>
+        </div>
+      </li>
+    </ul>
+  </div>
+  <span class="required" style="font-size: 16px;">*</span><span style="font-style: italic;color:yellow;font-size: 14px;"> Required Fields</span>
+  <p class="errors2" *ngIf="this.errors">Fill the first part and then press continue</p>
+    </div>  
+    </div>  
+<div class="box two">
+ 
+   <span style="background-color: #7f96bb;">Step 2 of 2</span>
+    <div class="inlinediv">
+        <div class="row">
+            <div class="col-25">
+                <label for="city">City<span class="required">*</span></label>
+            </div>
+            <div class="col-75">
+                <select formControlName="city" (blur)="choose()" (change)="changeCity($event)" [ngClass]="form.controls.city.disabled? 'disabled':'enabled' " >
+                    <option value="">Choose city</option>
+                    <option *ngFor="let c of cities" [value]="c">{{c}}</option>
+                </select>
+                <p class="errors" *ngIf="submitted && handleError('city', 'required')">City is required</p>
+            </div>
+            </div>
+        <div class="row"> 
+            <div class="col-25">
+                <label for="street">Street<span class="required">*</span></label>
+            </div>
+            <div class="col-75">
+                <input type="text" [ngClass]="form.controls.street.disabled? 'disabled':'enabled' " formControlName="street" placeholder="Street">
+                <p class="errors"  *ngIf="form.controls.street.dirty && form.controls.street.errors?.required">Street is required</p>
+            </div>
+            </div>
+    
+        <div class="row">
+            <div class="col-25">
+                <label for="fname">Name<span class="required">*</span></label>
+            </div>
+            <div class="col-75">
+                <input type="text" [ngClass]="form.controls.fname.disabled? 'disabled':'enabled' " formControlName="fname" placeholder="Your name..">
+                <p class="errors"  *ngIf="form.controls.fname.dirty && form.controls.fname.errors?.required">Name is required</p>
+            </div>
+            </div>
+    
+        <div class="row">
+            <div class="col-25">
+                <label for="lname">Last name<span class="required">*</span></label>
+            </div>
+            <div class="col-75">
+                <input type="text" [ngClass]="form.controls.lname.disabled? 'disabled':'enabled' " formControlName="lname" placeholder="Your last name..">
+                <p class="errors"  *ngIf="form.controls.lname.dirty && form.controls.lname.errors?.required">Last name is required</p>
+            </div>
+            </div>
+            
+            <div class="row">
+                <input type="submit" value="Register" [disabled]="this.emailError || this.idError || form.invalid" [ngClass]="form.invalid || !form.controls.city.value ||
+                 !form.controls.street.value || !form.controls.fname.value || !form.controls.lname.value || this.idError || this.emailError ? 'submitdisabled':'submitenabled' ">
+              </div>
+              <div class="col-75">
+              <div *ngIf="registerErr" class="error">
+                <span>Something went wrong</span>
+                <mat-icon  (click)="closeErr()" class="cancelicon" >cancel</mat-icon></div></div>
+             
+</div>
+</div>
+</div>
+</form>
+ 

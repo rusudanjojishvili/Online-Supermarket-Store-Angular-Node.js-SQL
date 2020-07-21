@@ -1,0 +1,19 @@
+
+<div id="main">
+<mat-dialog-content [formGroup]="form">
+    <img src="{{url}}{{data.img}}">
+    <p>{{data.p_name}}</p>
+    <p>Price: {{data.price | currency:"ILS":"symbol"}}</p>
+    
+    <mat-form-field>
+        <input matInput type="number" min="1"
+                placeholder="Quantity"
+               formControlName="quantity">
+    </mat-form-field>
+   
+</mat-dialog-content>
+<mat-dialog-actions> 
+    <button id="openbtn" mat-button (click)="add()">add</button>
+    <button id="closebtn" mat-button (click)="close()">close</button>
+</mat-dialog-actions>
+</div>
